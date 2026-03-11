@@ -1,7 +1,9 @@
 import { cyberColors } from "../theme/cyberColors";
 
-// [CIO] Transformamos o Navbar em uma "Utility Bar" (Barra de utilitários)
-// Removemos os links de navegação daqui, pois eles já estão na Sidebar.
+/**
+ * [CIO] Navbar de Utilitários
+ * Foco em identidade do usuário e status do sistema.
+ */
 export default function Navbar() {
   return (
     <header style={{
@@ -11,34 +13,27 @@ export default function Navbar() {
       borderBottom: `1px solid ${cyberColors.border}`,
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-end',
       padding: '0 24px',
       position: 'sticky',
       top: 0,
       zIndex: 100
     }}>
-      {/* Lado Esquerdo: Breadcrumb ou Título da Página Atual */}
-      <div style={{ color: cyberColors.text.secondary, fontSize: '14px', fontWeight: '500' }}>
-        System / <span style={{ color: 'white' }}>Overview</span>
-      </div>
-
-      {/* Lado Direito: Perfil e Alertas (Visão CISO) */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
         <div style={{ textAlign: 'right' }}>
           <div style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>Admin User</div>
-          <div style={{ color: cyberColors.status.online, fontSize: '12px' }}>● Connected</div>
+          {/* [CTO] Agora o TypeScript reconhece o caminho cyberColors.status.online */}
+          <div style={{ color: cyberColors.status.online, fontSize: '12px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '5px' }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: cyberColors.status.online }}></span>
+            Connected
+          </div>
         </div>
         
         <div style={{ 
-          width: '38px', 
-          height: '38px', 
-          borderRadius: '10px', 
+          width: '38px', height: '38px', borderRadius: '10px', 
           background: cyberColors.severity.medium,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '18px',
-          boxShadow: `0 0 15px ${cyberColors.severity.medium}44`
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '18px', boxShadow: `0 0 15px ${cyberColors.severity.medium}44`
         }}>
           👤
         </div>

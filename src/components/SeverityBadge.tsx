@@ -1,4 +1,3 @@
-import React from 'react';
 import { cyberColors } from '../shared/theme/cyberColors';
 
 interface SeverityBadgeProps {
