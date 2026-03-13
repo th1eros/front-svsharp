@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom"; // [CTO] Alterado para HashRouter
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import type { ReactNode } from "react";
 
 import Login from "./pages/Login";
@@ -8,7 +8,7 @@ import Vulns from "./pages/Vulns";
 import AssetDetails from "./pages/AssetDetails";
 import AdminLayout from "./shared/layout/AdminLayout";
 
-// Componente de Proteção (CISO)
+// Componente de Proteção (CISO) 🛡️
 function PrivateRoute({ children }: { children: ReactNode }) {
   const token = localStorage.getItem("@SVSharp:token");
   
@@ -21,12 +21,11 @@ function PrivateRoute({ children }: { children: ReactNode }) {
 
 export default function App() {
   return (
-    // [CTO] HashRouter garante que o GitHub Pages não retorne 404 ao atualizar a página
     <HashRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
 
-        {/* Grupo Protegido */}
+        {/* Grupo Protegido 🔒 */}
         <Route
           path="/"
           element={

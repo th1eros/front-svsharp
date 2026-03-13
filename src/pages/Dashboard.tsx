@@ -1,7 +1,7 @@
 import { cyberColors } from "../shared/theme/cyberColors";
 import SeverityBadge from "../components/SeverityBadge";
 
-// [CIO] Exemplo de dados simulando o que virá do seu vulnService
+// [CIO] Dados simulados 🧪
 const mockVulns = [
   { id: 1, title: "SQL Injection", severity: "Critica", asset: "DB-Production" },
   { id: 2, title: "Outdated SSH", severity: "Alta", asset: "Web-Server-01" },
@@ -13,7 +13,6 @@ export default function Dashboard() {
     <div style={{ color: 'white' }}>
       <h1 style={{ marginBottom: '30px', fontSize: '28px' }}>Security Overview</h1>
       
-      {/* [CTO] Tabela Estilizada com Badges */}
       <div style={{ 
         backgroundColor: cyberColors.card, 
         borderRadius: '12px', 
@@ -35,7 +34,6 @@ export default function Dashboard() {
                 <td style={{ padding: '16px 12px', fontWeight: '500' }}>{vuln.title}</td>
                 <td style={{ padding: '16px 12px', color: cyberColors.text.secondary }}>{vuln.asset}</td>
                 <td style={{ padding: '16px 12px' }}>
-                  {/* [CISO] Usando o componente para garantir padrão visual de risco */}
                   <SeverityBadge level={vuln.severity} />
                 </td>
               </tr>
