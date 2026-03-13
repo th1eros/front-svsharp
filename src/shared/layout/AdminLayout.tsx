@@ -1,40 +1,44 @@
 import { Outlet } from "react-router-dom";
-// [CTO] ../ sai de 'layout' para acessar 'theme'
-import { cyberColors } from "../theme/cyberColors"; 
-// [CTO] ./ busca na mesma pasta 'layout'
 import Sidebar from "./Sidebar"; 
 import Navbar from "./Navbar"; 
 
 /**
- * [CIO] Layout Central Integrado
- * Este arquivo é o "chassi" do seu sistema.
+ * Layout principal com Sidebar fixa e Navbar dinâmica.
+ * Implementa a paleta Deep Sea (#060b19) conforme guia visual.
  */
 export default function AdminLayout() {
   return (
     <div style={{ 
       display: "flex", 
       minHeight: "100vh", 
-      backgroundColor: cyberColors.background,
+      backgroundColor: "#060b19", 
       fontFamily: "'Inter', sans-serif",
-      color: 'white'
+      color: 'white',
+      overflow: 'hidden'
     }}>
       
-      {/* 🛡️ Inserindo a Sidebar na lateral esquerda */}
       <Sidebar />
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div style={{ 
+        flex: 1, 
+        display: "flex", 
+        flexDirection: "column",
+        marginLeft: '260px', // Compensação da Sidebar fixa
+        height: '100vh'
+      }}>
         
-        {/* Barra de Topo Utilitária */}
         <Navbar />
 
-        {/* Área de Conteúdo Dinâmico */}
         <main style={{ 
           flex: 1, 
-          padding: '40px', 
+          padding: '30px', 
           overflowY: 'auto',
-          background: `radial-gradient(circle at top right, ${cyberColors.card}44, transparent)`
+          // Gradiente radial para simular profundidade da imagem de referência
+          background: `radial-gradient(circle at 50% 50%, #0a1227 0%, #060b19 100%)`,
         }}>
-          <Outlet />
+          <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+             <Outlet />
+          </div>
         </main>
       </div>
     </div>

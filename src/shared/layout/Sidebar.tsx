@@ -1,34 +1,34 @@
-import { Link, useLocation } from "react-router-dom";
-import { cyberColors } from "../theme/cyberColors"; // [CTO] '../' sobe uma pasta para achar o theme
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Sidebar() {
   const location = useLocation();
-  const isActive = (path: string) => location.pathname === path;
-
-  const navLinkStyle = (path: string) => ({
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    padding: '12px 16px',
-    borderRadius: '8px',
-    textDecoration: 'none',
-    color: isActive(path) ? 'white' : cyberColors.text.secondary,
-    backgroundColor: isActive(path) ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
-    borderLeft: isActive(path) ? `4px solid ${cyberColors.severity.medium}` : '4px solid transparent',
-    transition: '0.3s',
-    marginBottom: '8px'
-  });
+  const menuItems = [
+    { name: 'Dashboard', path: '/dashboard' },
+    { name: 'Assets', path: '/assets' },
+    { name: 'Vulnerabilities', path: '/vulns' },
+  ];
 
   return (
-    <aside style={{ width: '260px', background: '#16213E', borderRight: `1px solid ${cyberColors.border}`, padding: '24px', display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      <div style={{ color: cyberColors.severity.medium, fontSize: '22px', fontWeight: 'bold', marginBottom: '40px' }}>
-        🛡️ SVSharp
-      </div>
-      <nav style={{ flex: 1 }}>
-        <Link to="/dashboard" style={navLinkStyle('/dashboard')}>📊 Dashboard</Link>
-        <Link to="/assets" style={navLinkStyle('/assets')}>🖥️ Assets</Link>
-        <Link to="/vulnerabilities" style={navLinkStyle('/vulnerabilities')}>⚠️ Vulnerabilities</Link>
-      </nav>
-    </aside>
+    <div style={{
+      width: '260px', height: '100vh', backgroundColor: '#0a1931',
+      borderRight: '1px solid #1e293b', padding: '20px', display: 'flex',
+      flexDirection: 'column', gap: '10px', position: 'fixed', zIndex: 101
+    }}>
+      <h2 style={{ color: '#fff', fontSize: '1.2rem', marginBottom: '40px', fontWeight: 800 }}>SV SHARP</h2>
+      
+      {menuItems.map((item) => {
+        const isActive = location.pathname === item.path;
+        return (
+          <Link key={item.path} to={item.path} style={{
+            color: isActive ? '#fff' : '#94a3b8',
+            backgroundColor: isActive ? 'rgba(0, 119, 182, 0.2)' : 'transparent',
+            textDecoration: 'none', padding: '12px 16px', borderRadius: '8px',
+            fontWeight: 500, transition: '0.2s', display: 'flex', alignItems: 'center', gap: '10px'
+          }}>
+            <span style={{ color: isActive ? '#0077b6' : 'inherit' }}>◆</span> {item.name}
+          </Link>
+        );
+      })}
+    </div>
   );
 }
