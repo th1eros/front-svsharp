@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { cyberColors } from '../shared/theme/cyberColors'; // Importando nosso tema unificado
+import api from '../services/api'; 
+import { cyberColors } from '../shared/theme/cyberColors';
 
 /**
- * [CISO] Tela de Autenticação Unificada
- * Design inspirado na Link Tree do usuário, mantendo a estética "Access Granted".
+ * [CISO] Tela de Autenticação Unificada - Integrada com API e Path Corrigido
  */
 export default function Login() {
   const navigate = useNavigate();
@@ -12,30 +12,44 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // [CTO] Simulação de Login - Integrar com authService futuramente
-  const handleLogin = (e: React.FormEvent) => {
+  // [CTO] Função de Login Real conectada ao Back-end
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    console.log('Tentativa de login:', { email });
     
-    // Simula delay de rede e sucesso
-    setTimeout(() => {
+    try {
+      // Explicação para o estagiário: Enviamos os dados para o back-end.
+      // O interceptor no api.ts cuidará de anexar o token nas próximas chamadas.
+      const response = await api.post('/sessions', {
+        email,
+        password,
+      });
+
+      const { token } = response.data;
+
+      // Salvamos o token com a chave padrão do sistema
+      localStorage.setItem('@SVSharp:token', token);
+      
+      console.log('✅ Acesso concedido. Redirecionando...');
+      navigate('/dashboard');
+
+    } catch (error: any) {
+      console.error('❌ Erro na autenticação:', error);
+      alert(error.response?.data?.message || 'Falha no acesso: Verifique suas credenciais.');
+    } finally {
       setLoading(false);
-      localStorage.setItem('svsharp_token', 'mock_token_granted');
-      navigate('/dashboard'); // Redireciona para o chassi principal
-    }, 1500);
+    }
   };
 
-  // Estilos Compartilhados para manter consistência com a imagem de referência
   const inputStyle: React.CSSProperties = {
     width: '100%',
     padding: '12px 15px',
     marginBottom: '20px',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)', // Fundo escuro semi-transparente
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
     border: `1px solid ${cyberColors.border}`,
     borderRadius: '6px',
     color: cyberColors.text.primary,
-    fontFamily: "'JetBrains Mono', monospace", // Fonte estilo terminal
+    fontFamily: "'JetBrains Mono', monospace",
     fontSize: '14px',
     outline: 'none',
     transition: 'border-color 0.3s',
@@ -51,167 +65,89 @@ export default function Login() {
 
   return (
     <div style={{
-      height: '100vh',
-      width: '100vw',
-      backgroundColor: '#000000', // Preto absoluto da referência
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'relative',
-      overflow: 'hidden',
-      fontFamily: "'Inter', sans-serif",
+      height: '100vh', width: '100vw', backgroundColor: '#000000',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      position: 'relative', overflow: 'hidden', fontFamily: "'Inter', sans-serif",
     }}>
       
-      {/* 🛡️ [Design] O Escudo Grande Transparente no Fundo */}
+      {/* 🛡️ Background Logo - Alterado para "./" para funcionar no GitHub Pages */}
       <img 
-        src="path_to_your_shield_logo.png" // Substitua pelo caminho real do logo
+        src="./shield_logo.png" 
         alt="Shield Background"
         style={{
-          position: 'absolute',
-          width: '80%', // Grande, ocupando a maior parte da tela
-          maxWidth: '800px',
-          opacity: 0.06, // Muito transparente (6%)
-          pointerEvents: 'none', // Não interfere nos cliques
-          zIndex: 1,
+          position: 'absolute', width: '80%', maxWidth: '800px',
+          opacity: 0.06, pointerEvents: 'none', zIndex: 1,
         }}
       />
 
-      {/* Container do Formulário - Com a borda neon da referência */}
       <div style={{
-        width: '100%',
-        maxWidth: '400px',
-        backgroundColor: '#050505', // Ligeiramente mais claro que o fundo
-        padding: '40px',
-        borderRadius: '12px',
-        border: `1px solid ${cyberColors.status.online}`, // Borda neon ciano
-        boxShadow: `0 0 20px ${cyberColors.status.online}33`, // Glow sutil ciano
-        position: 'relative',
-        zIndex: 10, // Acima do escudo de fundo
-        textAlign: 'center',
+        width: '100%', maxWidth: '400px', backgroundColor: '#050505',
+        padding: '40px', borderRadius: '12px', border: `1px solid ${cyberColors.status.online}`,
+        boxShadow: `0 0 20px ${cyberColors.status.online}33`, position: 'relative', zIndex: 10, textAlign: 'center',
       }}>
         
-        {/* Branding Superior Minimalista */}
         <div style={{ 
-          color: cyberColors.status.online, 
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: '20px',
-          fontWeight: 'bold',
-          marginBottom: '10px',
-          letterSpacing: '2px'
+          color: cyberColors.status.online, fontFamily: "'JetBrains Mono', monospace",
+          fontSize: '20px', fontWeight: 'bold', marginBottom: '10px', letterSpacing: '2px'
         }}>
           SVSHARP_OS
         </div>
         <div style={{ 
-          color: cyberColors.text.secondary, 
-          fontSize: '12px', 
-          marginBottom: '40px',
-          textTransform: 'uppercase',
-          letterSpacing: '1px'
+          color: cyberColors.text.secondary, fontSize: '12px', marginBottom: '40px',
+          textTransform: 'uppercase', letterSpacing: '1px'
         }}>
           Secure Access Terminal
         </div>
 
-        {/* Formulário de Login */}
         <form onSubmit={handleLogin}>
           <input 
             type="email" 
+            autoComplete="username"
             placeholder="SYSTEM_USER / EMAIL" 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             style={inputStyle}
             required
-            onFocus={(e) => e.currentTarget.style.borderColor = cyberColors.status.online}
-            onBlur={(e) => e.currentTarget.style.borderColor = cyberColors.border}
           />
           
           <input 
             type="password" 
+            autoComplete="current-password"
             placeholder="ACCESS_KEY / PASSWORD" 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             style={inputStyle}
             required
-            onFocus={(e) => e.currentTarget.style.borderColor = cyberColors.status.online}
-            onBlur={(e) => e.currentTarget.style.borderColor = cyberColors.border}
           />
 
-          {/* Botão de Ação Principal - Estilo idêntico ao da referência */}
           <button 
             type="submit" 
             disabled={loading}
             style={{
-              width: '100%',
-              padding: '12px',
-              backgroundColor: 'transparent',
-              border: `2px solid ${cyberColors.status.online}`,
-              borderRadius: '8px',
-              color: cyberColors.status.online,
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '14px',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'all 0.3s',
-              boxShadow: `0 0 10px ${cyberColors.status.online}22`,
-              marginBottom: '25px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px'
-            }}
-            onMouseOver={(e) => {
-              if(!loading) {
-                e.currentTarget.style.backgroundColor = `${cyberColors.status.online}11`;
-                e.currentTarget.style.boxShadow = `0 0 20px ${cyberColors.status.online}55`;
-              }
-            }}
-            onMouseOut={(e) => {
-              if(!loading) {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.boxShadow = `0 0 10px ${cyberColors.status.online}22`;
-              }
+              width: '100%', padding: '12px', backgroundColor: 'transparent',
+              border: `2px solid ${cyberColors.status.online}`, borderRadius: '8px',
+              color: cyberColors.status.online, fontFamily: "'JetBrains Mono', monospace",
+              fontSize: '14px', fontWeight: 'bold', textTransform: 'uppercase',
+              cursor: loading ? 'not-allowed' : 'pointer', transition: 'all 0.3s',
+              boxShadow: `0 0 10px ${cyberColors.status.online}22`, marginBottom: '25px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px'
             }}
           >
-            {loading ? 'Authenticating...' : '> Initialize Session'}
+            {loading ? 'AUTHENTICATING...' : '> Initialize Session'}
           </button>
         </form>
 
-        {/* [CISO] Links de Ação Secundária (Registrar e Esqueci) */}
         <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-          borderTop: `1px solid ${cyberColors.border}`,
-          paddingTop: '20px'
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          borderTop: `1px solid ${cyberColors.border}`, paddingTop: '20px'
         }}>
-          <Link 
-            to="/register" 
-            style={actionLinkStyle}
-            onMouseOver={(e) => e.currentTarget.style.color = cyberColors.text.primary}
-            onMouseOut={(e) => e.currentTarget.style.color = cyberColors.text.secondary}
-          >
-            [ Create Account ]
-          </Link>
-          
-          <Link 
-            to="/forgot-password" 
-            style={actionLinkStyle}
-            onMouseOver={(e) => e.currentTarget.style.color = cyberColors.status.offline} // Destaque em vermelho sutil
-            onMouseOut={(e) => e.currentTarget.style.color = cyberColors.text.secondary}
-          >
-            Forgot Key?
-          </Link>
+          <Link to="/register" style={actionLinkStyle}>[ Create Account ]</Link>
+          <Link to="/forgot-password" style={actionLinkStyle}>Forgot Key?</Link>
         </div>
 
-        {/* Footer Minimalista (referência à session date da imagem) */}
         <div style={{
-          position: 'absolute',
-          bottom: '10px',
-          left: 0,
-          width: '100%',
-          fontSize: '10px',
-          color: 'rgba(255,255,255,0.1)',
-          fontFamily: "'JetBrains Mono', monospace",
+          position: 'absolute', bottom: '10px', left: 0, width: '100%',
+          fontSize: '10px', color: 'rgba(255,255,255,0.1)', fontFamily: "'JetBrains Mono', monospace",
         }}>
           [SYS_STATUS: AWAITING_AUTH] - v1.0.2
         </div>
