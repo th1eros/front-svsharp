@@ -1,85 +1,87 @@
-import api from "./api";
-import { apiCatalog } from "./apiCatalog";
-import type { ResponseModel } from "../shared/ResponseModel";
-import type { 
-  AssetResponseDTO, 
-  AssetCriacaoDTO, 
-  EditarAssetDTO 
-} from "../shared/assetTypes";
+import api from './api';
 
-/**
- * [CTO + CISO] AssetService Padronizado 🚀
- * Implementando tratamento de erros e integração com o apiCatalog.
- */
+// [CIO] Interface atualizada para suportar os status de severidade do Dashboard
+export interface Asset {
+  id: number;
+  name: string;
+  type: string;
+  status: string;
+  isActive: boolean;
+}
+
+export interface AssetResponseDTO {
+  id: number;
+  nome: string;
+  tipo: string;
+  ambiente: "DEV" | "HML" | "PROD";
+  descricao?: string;
+  habilitado: boolean;
+  createdAt: string;
+}
+
+export interface AssetCriacaoDTO {
+  nome: string;
+  tipo: string;
+  ambiente: "DEV" | "HML" | "PROD";
+  descricao?: string;
+}
+
+export interface EditarAssetDTO {
+  nome?: string;
+  tipo?: string;
+  ambiente?: "DEV" | "HML" | "PROD";
+  descricao?: string;
+  habilitado?: boolean;
+}
+
 export const assetService = {
-
+  // [CTO] GET /api/assets
   async listar(): Promise<AssetResponseDTO[]> {
-    const response = await api.get<ResponseModel<AssetResponseDTO[]>>(
-      apiCatalog.assets.listar.path
-    );
-
-    if (!response.data.status) {
-      throw new Error(response.data.mensagem);
-    }
-
-    return response.data.dados;
+    const response = await api.get<AssetResponseDTO[]>('/api/assets');
+    return response.data;
   },
 
+  // [CTO] GET /api/assets/{id}
   async buscarPorId(id: number): Promise<AssetResponseDTO> {
-    const url = apiCatalog.assets.buscarPorId.path.replace("{id}", String(id));
-    const response = await api.get<ResponseModel<AssetResponseDTO>>(url);
-
-    if (!response.data.status) {
-      throw new Error(response.data.mensagem);
-    }
-
-    return response.data.dados;
+    const response = await api.get<AssetResponseDTO>(`/api/assets/${id}`);
+    return response.data;
   },
 
+  // [CISO] POST /api/assets
   async criar(dto: AssetCriacaoDTO): Promise<AssetResponseDTO> {
-    const response = await api.post<ResponseModel<AssetResponseDTO>>(
-      apiCatalog.assets.criar.path,
-      dto
-    );
-
-    if (!response.data.status) {
-      throw new Error(response.data.mensagem);
-    }
-
-    return response.data.dados;
+    const response = await api.post<AssetResponseDTO>('/api/assets', dto);
+    return response.data;
   },
 
+  // [CTO] PUT /api/assets/{id}
   async editar(id: number, dto: EditarAssetDTO): Promise<AssetResponseDTO> {
-    const url = apiCatalog.assets.editar.path.replace("{id}", String(id));
-    const response = await api.put<ResponseModel<AssetResponseDTO>>(url, dto);
-
-    if (!response.data.status) {
-      throw new Error(response.data.mensagem);
-    }
-
-    return response.data.dados;
+    const response = await api.put<AssetResponseDTO>(`/api/assets/${id}`, dto);
+    return response.data;
   },
 
-  // [CTO] Implementação de Soft Delete usando a rota de Arquivar
-  async arquivar(id: number): Promise<boolean> {
-    const url = apiCatalog.assets.arquivar.path.replace("{id}", String(id));
-    const response = await api.patch<ResponseModel<boolean>>(url);
-
-    if (!response.data.status) {
-      throw new Error(response.data.mensagem);
-    }
-
-    return response.data.dados;
+  // [CTO] DELETE /api/assets/{id} (Soft Delete)
+  async arquivar(id: number): Promise<void> {
+    await api.delete(`/api/assets/${id}`);
   },
 
-  async restaurar(id: number): Promise<boolean> {
-    const url = apiCatalog.assets.restaurar.path.replace("{id}", String(id));
-    const response = await api.patch<ResponseModel<boolean>>(url);
+  // [CTO] PATCH /api/assets/{id}/restore
+  async restaurar(id: number): Promise<void> {
+    await api.patch(`/api/assets/${id}/restore`);
+  },
 
-    if (!response.data.status) {
-      throw new Error(response.data.mensagem);
-    }
+  // [CTO] POST /api/assets/{id}/vulns/{vulnId}
+  async adicionarVuln(assetId: number, vulnId: number): Promise<void> {
+    await api.post(`/api/assets/${assetId}/vulns/${vulnId}`);
+  },
 
-    return response.data.dados;
+  // [CTO] DELETE /api/assets/{id}/vulns/{vulnId}
+  async removerVuln(assetId: number, vulnId: number): Promise<void> {
+    await api.delete(`/api/assets/${assetId}/vulns/${vulnId}`);
+  },
+
+  // Método legado (para compatibilidade)
+  async getAll(): Promise<Asset[]> {
+    const response = await api.get<Asset[]>('/api/assets');
+    return response.data;
   }
 };

@@ -39,5 +39,7 @@ export const cyberColors = {
     glowHigh: 'rgba(251, 146, 60, 0.2)',
     glowMedium: 'rgba(59, 130, 246, 0.2)',
     glass: 'rgba(22, 33, 62, 0.8)',
+    neonPink: '#ff0055',      // ← ADICIONE ISTO
+    neonPurple: '#7000ff',    // ← ADICIONE ISTO
   }
 };
