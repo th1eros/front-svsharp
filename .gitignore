@@ -1,30 +1,32 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-
-# Dependencies
-node_modules
-.pnp
-.pnp.js
-
-# Build output
-dist
-dist-ssr
-*.local
-
-# Editor
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# Env
+# === SEGURANÇA (Obrigatório) ===
 .env
 .env.local
-.env.production
+.env.development.local
+.env.test.local
+.env.production.local
+appsettings.json
+appsettings.*.json
+*.pem
+*.key
+
+# === .NET / C# (Back-end) ===
+[Bb]in/
+[Oo]bj/
+out/
+.vscode/
+.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# === Node / React / Vue (Front-end) ===
+node_modules/
+dist/
+build/
+.cache/
+.npm
+npm-debug.log*
+
+# === Sistema Operacional ===
+Thumbs.db
+.DS_Store

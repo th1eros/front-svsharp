@@ -192,7 +192,7 @@ export default function Dashboard() {
                     innerRadius={52} outerRadius={80}
                     paddingAngle={4}
                     dataKey="value"
-                    label={({ name, percent }) => `${name} ${Math.round(percent * 100)}%`}
+                    label={({ name, percent }: { name: string; percent: number }) => `${name} ${Math.round(percent * 100)}%`}
                     labelLine={false}
                   >
                     {assetDist.map(entry => (
