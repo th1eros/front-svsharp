@@ -2,7 +2,8 @@ import api from './api'
 import type { ResponseModel } from '../shared/ResponseModel'
 import type { AssetResponseDTO, AssetCriacaoDTO, EditarAssetDTO } from '../shared/assetTypes'
 
-// 🧠 Dicionários de Tradução (Frontend -> Backend Enum)
+/** * 🗺️ Mapeamentos para converter texto do Front para números do C# 
+ */
 const MAP_TIPO: Record<string, number> = { 
   'OperatingSystem': 0, 'WebApplication': 1, 'Database': 2, 'API': 3, 'Network': 4, 'Other': 5 
 };
@@ -15,12 +16,18 @@ export const assetService = {
     return r.data.dados
   },
 
+  async buscarPorId(id: number): Promise<AssetResponseDTO> {
+    const r = await api.get<ResponseModel<AssetResponseDTO>>(`/assets/${id}`)
+    if (!r.data.status) throw new Error(r.data.mensagem)
+    return r.data.dados
+  },
+
   async criar(dto: AssetCriacaoDTO): Promise<AssetResponseDTO> {
     const payload = {
       ...dto,
-      tipo: MAP_TIPO[dto.tipo] ?? 0,
-      ambiente: MAP_AMBIENTE[dto.ambiente] ?? 0,
-      habilitado: dto.habilitado // Booleano passa direto
+      tipo: MAP_TIPO[dto.tipo as string] ?? 0,
+      ambiente: MAP_AMBIENTE[dto.ambiente as string] ?? 0,
+      habilitado: dto.habilitado ?? true
     };
 
     const r = await api.post<ResponseModel<AssetResponseDTO>>('/assets', payload)
@@ -31,8 +38,8 @@ export const assetService = {
   async editar(id: number, dto: EditarAssetDTO): Promise<AssetResponseDTO> {
     const payload = {
       ...dto,
-      ...(dto.tipo && { tipo: MAP_TIPO[dto.tipo] }),
-      ...(dto.ambiente && { ambiente: MAP_AMBIENTE[dto.ambiente] }),
+      ...(dto.tipo && { tipo: MAP_TIPO[dto.tipo as string] }),
+      ...(dto.ambiente && { ambiente: MAP_AMBIENTE[dto.ambiente as string] }),
       ...(dto.habilitado !== undefined && { habilitado: dto.habilitado })
     };
 
@@ -49,9 +56,8 @@ export const assetService = {
     await api.patch(`/assets/${id}/restore`)
   },
 
-  /** 🔗 Relação N:N (Muitos-para-Muitos) */
+  /** 🔗 Relação N:N */
   async adicionarVuln(assetId: number, vulnId: number): Promise<void> {
-    // Usando a rota curta 'vulns' que definimos no Controller
     await api.post(`/assets/${assetId}/vulns/${vulnId}`)
   },
 

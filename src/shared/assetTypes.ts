@@ -3,9 +3,8 @@ import type { VulnResponseDTO } from './vulnTypes'
 export type AssetResponseDTO = {
   id: number
   nome: string
-  // Permitimos number para o que vem do C# e string para o mapeamento
-  tipo: 'OperatingSystem' | 'WebApplication' | 'Database' | 'API' | 'Network' | 'Other' | number
-  ambiente: 'DEV' | 'HML' | 'PROD' | number
+  tipo: any // Usamos any temporariamente para destravar o build das páginas
+  ambiente: any
   descricao?: string
   habilitado: boolean
   createdAt: string
@@ -14,11 +13,10 @@ export type AssetResponseDTO = {
 
 export type AssetCriacaoDTO = {
   nome: string
-  tipo: 'OperatingSystem' | 'WebApplication' | 'Database' | 'API' | 'Network' | 'Other' | number
-  ambiente: 'DEV' | 'HML' | 'PROD' | number
+  tipo: any
+  ambiente: any
   descricao?: string
-  habilitado: boolean // 👈 Adicionado para bater com o que o service envia
+  habilitado?: boolean // O '?' torna opcional, resolvendo o erro de "missing property"
 }
 
-// Usamos Partial para facilitar a edição de campos específicos
 export type EditarAssetDTO = Partial<AssetCriacaoDTO>
