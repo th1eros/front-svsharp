@@ -57,10 +57,10 @@ export default function Vulns() {
 
   /* severity counts */
   const counts = {
-    critical: vulns.filter(v => v.nivel === 'Critica').length,
-    high:     vulns.filter(v => v.nivel === 'Alta').length,
-    medium:   vulns.filter(v => v.nivel === 'Media').length,
-    low:      vulns.filter(v => v.nivel === 'Baixa').length,
+    critical: vulns.filter(v => v.nivel.toLowerCase() === 'critica').length,
+    high:     vulns.filter(v => v.nivel.toLowerCase() === 'alta').length,
+    medium:   vulns.filter(v => v.nivel.toLowerCase() === 'media').length,
+    low:      vulns.filter(v => v.nivel.toLowerCase() === 'baixa').length,
   }
 
   /* CREATE */
