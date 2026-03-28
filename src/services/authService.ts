@@ -12,18 +12,18 @@ export const authService = {
     })
     const token = response.data?.token
     if (!token) throw new Error('Token não retornado pela API.')
-    localStorage.setItem('@SVSharp:token', token)
+    localStorage.setItem('@aBitat:token', token)
     api.defaults.headers.Authorization = `Bearer ${token}`
     return token
   },
 
   logout() {
-    localStorage.removeItem('@SVSharp:token')
+    localStorage.removeItem('@aBitat:token')
     delete api.defaults.headers.Authorization
     window.location.hash = '/login'
   },
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('@SVSharp:token')
+    return !!localStorage.getItem('@aBitat:token')
   },
 }

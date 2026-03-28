@@ -1,4 +1,4 @@
-# 🛡️ SVSharp Frontend — Visual Intelligence Dashboard
+# 🛡️ aBitat Frontend — Visual Intelligence Dashboard
 
 A modern, high-performance web dashboard designed for security professionals to visualize and manage enterprise cybersecurity posture. Built with **React 18**, **TypeScript**, and **Vite**.
 
@@ -6,7 +6,7 @@ A modern, high-performance web dashboard designed for security professionals to 
 
 ## 📊 Visual Intelligence (CIO Focus)
 
-The SVSharp Dashboard transforms raw vulnerability data into actionable insights through high-fidelity visualizations.
+The aBitat Dashboard transforms raw vulnerability data into actionable insights through high-fidelity visualizations.
 
 - **Real-time Analytics:** Instant visibility into Critical, High, Medium, and Low severity risks.
 - **Asset Distribution:** Environment-based breakdown (DEV, HML, PROD) using interactive Recharts components.
@@ -92,4 +92,4 @@ npm run build
 
 ---
 
-**CIO/CTO Note:** *The SVSharp Frontend is designed for speed and clarity, providing security teams with the tools they need to respond to threats effectively while maintaining a professional, data-driven interface.*
+**CIO/CTO Note:** *The aBitat Frontend is designed for speed and clarity, providing security teams with the tools they need to respond to threats effectively while maintaining a professional, data-driven interface.*

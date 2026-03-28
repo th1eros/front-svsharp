@@ -49,7 +49,7 @@ export default function Register() {
               <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
             </svg>
           </div>
-          <div style={{ fontSize: 26, fontWeight: 800, color: '#e2ecf7', letterSpacing: '3px' }}>SVSHARP</div>
+          <div style={{ fontSize: 26, fontWeight: 800, color: '#e2ecf7', letterSpacing: '3px' }}>aBitat</div>
           <div style={{ fontSize: 12, color: '#7b96b8', marginTop: 4 }}>Create your account</div>
         </div>
 

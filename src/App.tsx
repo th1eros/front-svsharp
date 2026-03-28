@@ -13,7 +13,7 @@ import Settings     from './pages/Settings'
 import AdminLayout  from './shared/layout/AdminLayout'
 
 function PrivateRoute({ children }: { children: ReactNode }) {
-  const token = localStorage.getItem('@SVSharp:token')
+  const token = localStorage.getItem('@aBitat:token')
   if (!token) return <Navigate to="/login" replace />
   return <>{children}</>
 }

@@ -51,7 +51,7 @@ export default function Settings() {
     '2fa': false, notif_critical: true, notif_weekly: false, notif_assets: true, compact: false,
   })
   const [inputs, setInputs] = useState<Record<string, string>>({
-    timeout: '60', api_url: 'https://api-svsharp.onrender.com/api', api_timeout: '60000',
+    timeout: '60', api_url: 'https://api-aBitat.onrender.com/api', api_timeout: '60000',
   })
   const [selects, setSelects] = useState<Record<string, string>>({
     jwt_exp: '8h', page_size: '25', date_fmt: 'DD/MM/YYYY',
@@ -179,7 +179,7 @@ export default function Settings() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             {[
-              { label: 'Platform',   value: 'SVSharp v1.0' },
+              { label: 'Platform',   value: 'aBitat v1.0' },
               { label: 'Framework',  value: 'React 18 + Vite' },
               { label: 'Backend',    value: '.NET 8 / ASP.NET Core' },
               { label: 'Database',   value: 'PostgreSQL (Render)' },
